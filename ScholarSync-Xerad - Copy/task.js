@@ -20,7 +20,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const currentUser = getCurrentUser();
     const tasksKey = currentUser ? `scholarsync_tasks_db_${currentUser.username}` : 'scholarsync_tasks_db';
-    let tasksCollection = JSON.parse(localStorage.getItem(tasksKey)) || JSON.parse(localStorage.getItem('scholarsync_tasks_db')) || [];
+
+    if (!currentUser) {
+        // Not logged in — use legacy global storage (or redirect if you prefer)
+        // Redirect to login to avoid cross-user data exposure
+        window.location.href = 'index.html';
+        return;
+    }
+
+    let tasksCollection = JSON.parse(localStorage.getItem(tasksKey)) || [];
+
+    // Update welcome name in UI
+    const welcomeNameEl = document.getElementById('welcomeName');
+    if (welcomeNameEl && currentUser) welcomeNameEl.textContent = currentUser.firstName || currentUser.username || 'Friend';
+
+    // Logout handler
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('isLoggedIn');
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        });
+    }
     
     // Tracking pointer variables for operational editing mode states
     let currentEditTaskId = null; 

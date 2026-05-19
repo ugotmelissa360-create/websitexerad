@@ -133,7 +133,13 @@ function getCurrentUser() {
 
 const currentUser = getCurrentUser();
 const notesKey = currentUser ? `notes_${currentUser.username}` : 'notes';
-let notes = JSON.parse(localStorage.getItem(notesKey)) || JSON.parse(localStorage.getItem('notes')) || [];
+
+if (!currentUser) {
+    // Not logged in — redirect to login to avoid showing other users' notes
+    window.location.href = 'index.html';
+}
+
+let notes = currentUser ? (JSON.parse(localStorage.getItem(notesKey)) || []) : (JSON.parse(localStorage.getItem('notes')) || []);
 
 // Logout handler (clears session and redirects to login)
 const logoutBtn = document.getElementById('logoutBtn');

@@ -136,7 +136,7 @@ function resetTimer() {
 
     function loadTasksForDashboard() {
         const perKey = `scholarsync_tasks_db_${currentUser.username}`;
-        const tasks = JSON.parse(localStorage.getItem(perKey)) || JSON.parse(localStorage.getItem('scholarsync_tasks_db')) || [];
+        const tasks = JSON.parse(localStorage.getItem(perKey)) || [];
         const taskListEl = document.getElementById('task-list');
         if (!taskListEl) return;
         if (!tasks || tasks.length === 0) {
@@ -151,7 +151,7 @@ function resetTimer() {
 
     function loadNotesForDashboard() {
         const perKey = `notes_${currentUser.username}`;
-        const notes = JSON.parse(localStorage.getItem(perKey)) || JSON.parse(localStorage.getItem('notes')) || [];
+        const notes = JSON.parse(localStorage.getItem(perKey)) || [];
         const notesEl = document.getElementById('notes-container');
         if (!notesEl) return;
         if (!notes || notes.length === 0) {
